@@ -29,7 +29,10 @@ export default function App() {
       if (data.refusal) {
         setScreen('refusal');
       } else {
-        updateAppState({ current_missions: data.missions.map(createMission) });
+        updateAppState({
+          current_missions: data.missions.map(createMission),
+          energy_level: Math.max(0, appState.energy_level - data.energy_cost),
+        });
         setScreen('breakdown');
       }
     } finally {
