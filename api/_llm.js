@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { SYSTEM_PROMPT } from './_prompt.js';
+import { isValidBreakdownResponse } from './_validate.js';
 
 // Structured output via forced tool-use: the LLM must call this tool, so its
 // arguments are guaranteed to match this JSON schema — no free-text parsing,
@@ -39,13 +40,7 @@ function getClient() {
   return client;
 }
 
-/**
- * Calls the LLM to produce a structured panda breakdown.
- * @param {string} problem_text
- * @param {number} current_energy
- * @returns {Promise<{missions: Array, panda_dialogue: string, energy_cost: number, refusal: boolean}>}
- */
-export async function callBreakdownLLM(problem_text, current_energy) {
+async function requestBreakdown(problem_text, current_energy) {
   const response = await getClient().messages.create({
     model: 'claude-sonnet-5',
     max_tokens: 1024,
@@ -65,4 +60,30 @@ export async function callBreakdownLLM(problem_text, current_energy) {
     throw new Error('LLM did not return a tool_use block');
   }
   return toolUse.input;
+}
+
+const MAX_ATTEMPTS = 2;
+
+/**
+ * Calls the LLM to produce a structured panda breakdown, retrying once
+ * (silently) if the response fails validation — e.g. too many missions or a
+ * malformed shape. Throws only if every attempt fails.
+ * @param {string} problem_text
+ * @param {number} current_energy
+ * @returns {Promise<{missions: Array, panda_dialogue: string, energy_cost: number, refusal: boolean}>}
+ */
+export async function callBreakdownLLM(problem_text, current_energy) {
+  let lastError;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const result = await requestBreakdown(problem_text, current_energy);
+      if (isValidBreakdownResponse(result)) {
+        return result;
+      }
+      lastError = new Error('LLM response failed validation');
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError;
 }
