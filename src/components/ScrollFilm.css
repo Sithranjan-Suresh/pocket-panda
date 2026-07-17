@@ -1,0 +1,400 @@
+/* The Descent to Rest — one continuous shot, scrubbed by scroll. */
+
+.film {
+  position: relative;
+  height: 520vh;
+  background: #16241c;
+}
+
+.film--static {
+  height: 100svh;
+}
+
+.film__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.film__stage--static {
+  position: relative;
+  height: 100svh;
+}
+
+/* Sky + light */
+
+.film__sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #2e4438 0%, #22362b 46%, #16241c 100%);
+}
+
+.film__dark {
+  position: absolute;
+  inset: 0;
+  background: #0c1510;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.film__moon {
+  position: absolute;
+  top: 9vh;
+  right: 12vw;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #f9f3df 0%, #f4ecd8 55%, rgba(244, 236, 216, 0) 72%);
+  box-shadow: 0 0 60px 22px rgba(244, 236, 216, 0.18);
+  opacity: 0.55;
+  will-change: transform, opacity;
+}
+
+/* Canopy layers (hang from the top, slide up past the camera) */
+
+.film__canopy {
+  position: absolute;
+  top: -4vh;
+  left: -6vw;
+  width: 112vw;
+  height: 46vh;
+  transform-origin: 50% 0%;
+  will-change: transform;
+}
+
+.film__canopy--back {
+  height: 38vh;
+  opacity: 0.9;
+}
+
+.film__canopy--mid {
+  height: 44vh;
+}
+
+.film__canopy--front {
+  height: 52vh;
+}
+
+/* Leaf-words */
+
+.film__leafwords {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.film__leafword {
+  position: absolute;
+  top: 40vh;
+  padding: 0.55em 1.1em;
+  background: #3a6443;
+  color: #dff0dc;
+  font-family: var(--heading);
+  font-weight: 600;
+  border-radius: 4px 999px 4px 999px;
+  white-space: nowrap;
+  opacity: 0;
+  will-change: transform, opacity;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Understory light shafts */
+
+.film__shaft {
+  position: absolute;
+  top: -12vh;
+  width: 26vw;
+  height: 130vh;
+  background: linear-gradient(180deg, rgba(255, 233, 163, 0.35) 0%, rgba(255, 233, 163, 0) 78%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.film__shaft--a {
+  left: 16vw;
+  transform: skewX(-12deg);
+}
+
+.film__shaft--b {
+  right: 14vw;
+  transform: skewX(9deg);
+  width: 18vw;
+}
+
+/* Grove floor */
+
+.film__grove {
+  position: absolute;
+  inset: 0;
+  transform: translateY(62vh);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.film__ground {
+  position: absolute;
+  bottom: -14vh;
+  left: -10vw;
+  width: 120vw;
+  height: 30vh;
+  border-radius: 50% 50% 0 0;
+  background: #1d3327;
+}
+
+.film__bamboo {
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 900px);
+  height: 34vh;
+  z-index: 1;
+}
+
+.film__panda {
+  position: absolute;
+  bottom: 10.5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(46vw, 300px);
+  z-index: 2;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+}
+
+.film__zzz {
+  position: absolute;
+  bottom: 34vh;
+  left: calc(50% + 40px);
+  z-index: 2;
+  color: #f4ecd8;
+  font-family: var(--heading);
+  font-weight: 600;
+}
+
+.film__zzz span {
+  position: absolute;
+  opacity: 0;
+  animation: film-zzz 3.2s ease-in-out infinite;
+}
+
+.film__zzz span:nth-child(1) {
+  font-size: 1rem;
+}
+
+.film__zzz span:nth-child(2) {
+  font-size: 1.35rem;
+  animation-delay: 1.05s;
+}
+
+.film__zzz span:nth-child(3) {
+  font-size: 1.7rem;
+  animation-delay: 2.1s;
+}
+
+@keyframes film-zzz {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(-6deg);
+  }
+  25% {
+    opacity: 0.85;
+  }
+  70% {
+    opacity: 0;
+    transform: translate(26px, -44px) rotate(10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(26px, -44px) rotate(10deg);
+  }
+}
+
+/* Fireflies */
+
+.film__fireflies {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.film__firefly {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe9a3 0%, rgba(255, 233, 163, 0.35) 55%, rgba(255, 233, 163, 0) 75%);
+  animation-name: film-twinkle;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes film-twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+/* Vignette + seam */
+
+.film__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 44%, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0.38) 100%);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.film__seam {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(22, 36, 28, 0) 30%, #16241c 100%);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Copy — hero + beats */
+
+.film__hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+  z-index: 3;
+}
+
+.film__wordmark {
+  margin: 0;
+  font-family: var(--heading);
+  font-weight: 700;
+  font-size: clamp(3rem, 12vw, 7rem);
+  letter-spacing: -0.02em;
+  color: #f4ecd8;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  line-height: 1.1;
+}
+
+.film__wordmark span {
+  display: inline-block;
+  will-change: transform;
+}
+
+.film__tagline {
+  margin-top: 0.6em;
+  font-size: clamp(1rem, 2.6vw, 1.35rem);
+  color: #cfe0c9;
+  font-style: italic;
+}
+
+.film__hint {
+  position: absolute;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #cfe0c9;
+  opacity: 0.7;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  animation: film-hint 2.2s ease-in-out infinite;
+  z-index: 3;
+}
+
+@keyframes film-hint {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 8px);
+  }
+}
+
+.film__beat {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 8vw;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+  color: #e9f0e4;
+  will-change: transform, opacity;
+}
+
+.film__beat p {
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  margin: 0.2em 0;
+}
+
+.film__beat-strong {
+  font-family: var(--heading);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 4.4vw, 2.5rem) !important;
+  color: #f4ecd8;
+}
+
+.film__beat--panda {
+  justify-content: flex-start;
+  padding-top: 14vh;
+}
+
+/* Skip button */
+
+.film__skip {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 10;
+  background: rgba(22, 36, 28, 0.72);
+  color: #cfe0c9;
+  border: 1px solid rgba(207, 224, 201, 0.3);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s;
+}
+
+.film__skip:hover {
+  background: rgba(34, 54, 43, 0.85);
+}
+
+.film__skip--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .film__moon {
+    width: 60px;
+    height: 60px;
+    right: 8vw;
+  }
+
+  .film__panda {
+    width: 62vw;
+  }
+
+  .film__leafword {
+    font-size: 0.85rem !important;
+  }
+}

@@ -1,3 +1,21 @@
+/* App section — the landing zone the film melts into */
+
+.app-section {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Seam handoff: start at the film's final deep-green, dawn into the app bg */
+  background: linear-gradient(180deg, #16241c 0%, var(--bg) 34%);
+  box-sizing: border-box;
+  padding: 18vh 24px 10vh;
+}
+
+.app-section__inner {
+  width: 100%;
+  max-width: 640px;
+}
+
 /* Shared panda + energy elements */
 
 .panda-avatar {

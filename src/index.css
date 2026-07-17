@@ -48,14 +48,8 @@ body {
 }
 
 #root {
-  max-width: 640px;
-  margin: 0 auto;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  margin: 0;
   box-sizing: border-box;
-  padding: 24px;
 }
 
 h1,

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ScrollFilm from './components/ScrollFilm.jsx';
 import InputScreen from './components/InputScreen.jsx';
 import BreakdownScreen from './components/BreakdownScreen.jsx';
 import RefusalState from './components/RefusalState.jsx';
@@ -86,12 +87,10 @@ export default function App() {
     setScreen(returnScreen);
   }
 
-  if (loading) {
-    return showLoading ? <LoadingPanda /> : null;
-  }
-
   let content;
-  if (screen === 'grove') {
+  if (loading) {
+    content = showLoading ? <LoadingPanda /> : null;
+  } else if (screen === 'grove') {
     content = <GroveScreen groveCount={appState.grove_count} onBack={handleBackFromGrove} />;
   } else if (screen === 'breakdown') {
     content = (
@@ -129,8 +128,15 @@ export default function App() {
   }
 
   return (
-    <div className="screen-transition" key={screen}>
-      {content}
-    </div>
+    <>
+      <ScrollFilm />
+      <main id="panda-app" className="app-section">
+        <div className="app-section__inner">
+          <div className="screen-transition" key={loading ? 'loading' : screen}>
+            {content}
+          </div>
+        </div>
+      </main>
+    </>
   );
 }
