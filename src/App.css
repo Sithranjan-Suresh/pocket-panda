@@ -209,6 +209,24 @@
   gap: 12px;
 }
 
+.grove-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.grove-screen__stalks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  max-width: 40ch;
+  font-size: 1.5rem;
+}
+
 .ticks {
   position: relative;
   width: 100%;
