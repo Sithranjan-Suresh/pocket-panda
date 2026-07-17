@@ -26,6 +26,7 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ problem_text: text, current_energy: appState.energy_level }),
       });
+      if (!res.ok) throw new Error(`request failed: ${res.status}`);
       const data = await res.json();
 
       setPandaDialogue(data.panda_dialogue);
@@ -38,6 +39,10 @@ export default function App() {
         });
         setScreen('breakdown');
       }
+    } catch {
+      // Network hiccup or the API being unreachable — stay in character,
+      // never surface a raw error message or a blank/broken screen.
+      setPandaDialogue("Lost my train of thought for a second there. Try again?");
     } finally {
       setLoading(false);
     }
@@ -55,6 +60,7 @@ export default function App() {
   function handleNewProblem() {
     updateAppState({ current_missions: [] });
     setProblemText('');
+    setPandaDialogue('');
     setScreen('input');
   }
 
@@ -112,7 +118,14 @@ export default function App() {
       />
     );
   } else {
-    content = <InputScreen onSubmit={handleSubmit} disabled={loading} onGoToGrove={handleGoToGrove} />;
+    content = (
+      <InputScreen
+        onSubmit={handleSubmit}
+        disabled={loading}
+        onGoToGrove={handleGoToGrove}
+        pandaDialogue={pandaDialogue}
+      />
+    );
   }
 
   return (

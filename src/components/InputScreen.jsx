@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import PandaDialogueBubble from './PandaDialogueBubble.jsx';
 
-export default function InputScreen({ onSubmit, disabled, onGoToGrove }) {
+export default function InputScreen({ onSubmit, disabled, onGoToGrove, pandaDialogue }) {
   const [text, setText] = useState('');
 
   function handleSubmit(e) {
@@ -13,6 +14,7 @@ export default function InputScreen({ onSubmit, disabled, onGoToGrove }) {
   return (
     <form className="input-screen" onSubmit={handleSubmit}>
       <h1 className="input-screen__prompt">What's sitting on your chest?</h1>
+      {pandaDialogue && <PandaDialogueBubble text={pandaDialogue} />}
       <textarea
         className="input-screen__textarea"
         value={text}
