@@ -15,23 +15,26 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const showLoading = useDelayedVisible(loading);
 
-  function handleSubmit(problemText) {
+  async function handleSubmit(problemText) {
     setLoading(true);
-    // Stub response to prove out screen routing — replaced by a real
-    // /breakdown fetch call in the next task.
-    setTimeout(() => {
-      setLoading(false);
-      setPandaDialogue("Okay. Two things. That's it for now.");
-      updateAppState({
-        current_missions: [
-          createMission({
-            title: 'Open the syllabus',
-            action_text: "Just open the file. Don't read it yet.",
-          }),
-        ],
+    try {
+      const res = await fetch('/api/breakdown', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ problem_text: problemText, current_energy: appState.energy_level }),
       });
-      setScreen('breakdown');
-    }, 300);
+      const data = await res.json();
+
+      setPandaDialogue(data.panda_dialogue);
+      if (data.refusal) {
+        setScreen('refusal');
+      } else {
+        updateAppState({ current_missions: data.missions.map(createMission) });
+        setScreen('breakdown');
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleNewProblem() {
