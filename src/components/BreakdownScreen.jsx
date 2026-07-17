@@ -1,5 +1,29 @@
+import { useState } from 'react';
 import EnergyBar from './EnergyBar.jsx';
 import PandaDialogueBubble from './PandaDialogueBubble.jsx';
+
+function DraftedContent({ text }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // clipboard API unavailable — the drafted text is still visible to copy manually
+    }
+  }
+
+  return (
+    <div className="mission-card__draft">
+      <p className="mission-card__draft-text">{text}</p>
+      <button type="button" className="mission-card__copy" onClick={handleCopy}>
+        {copied ? 'Copied!' : 'Copy'}
+      </button>
+    </div>
+  );
+}
 
 function MissionCard({ mission, onToggleComplete }) {
   return (
@@ -13,11 +37,7 @@ function MissionCard({ mission, onToggleComplete }) {
         <span className="mission-card__title">{mission.title}</span>
       </label>
       <p className="mission-card__action">{mission.action_text}</p>
-      {mission.drafted_content && (
-        <div className="mission-card__draft">
-          <p className="mission-card__draft-text">{mission.drafted_content}</p>
-        </div>
-      )}
+      {mission.drafted_content && <DraftedContent text={mission.drafted_content} />}
     </li>
   );
 }

@@ -227,6 +227,22 @@
   font-size: 1.5rem;
 }
 
+.mission-card__draft {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+.mission-card__draft-text {
+  flex: 1;
+  font-style: italic;
+  margin: 0;
+}
+
 .ticks {
   position: relative;
   width: 100%;
