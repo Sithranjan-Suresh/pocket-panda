@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function InputScreen({ onSubmit, disabled }) {
+export default function InputScreen({ onSubmit, disabled, onGoToGrove }) {
   const [text, setText] = useState('');
 
   function handleSubmit(e) {
@@ -23,6 +23,9 @@ export default function InputScreen({ onSubmit, disabled }) {
       />
       <button className="input-screen__submit" type="submit" disabled={disabled || !text.trim()}>
         Hand it to the panda
+      </button>
+      <button type="button" className="input-screen__grove-link" onClick={onGoToGrove}>
+        View my grove
       </button>
     </form>
   );

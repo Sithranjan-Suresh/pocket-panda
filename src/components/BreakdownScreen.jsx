@@ -30,6 +30,7 @@ export default function BreakdownScreen({
   onToggleComplete,
   onAskForMore,
   onNewProblem,
+  onGoToGrove,
   askForMoreDisabled,
 }) {
   return (
@@ -47,6 +48,9 @@ export default function BreakdownScreen({
         </button>
         <button type="button" onClick={onNewProblem}>
           Something else is on my chest
+        </button>
+        <button type="button" onClick={onGoToGrove}>
+          View my grove
         </button>
       </div>
     </div>

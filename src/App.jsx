@@ -2,6 +2,7 @@ import { useState } from 'react';
 import InputScreen from './components/InputScreen.jsx';
 import BreakdownScreen from './components/BreakdownScreen.jsx';
 import RefusalState from './components/RefusalState.jsx';
+import GroveScreen from './components/GroveScreen.jsx';
 import LoadingPanda from './components/LoadingPanda.jsx';
 import { createMission } from './state/mission.js';
 import { useAppState } from './state/AppStateContext.jsx';
@@ -10,7 +11,8 @@ import './App.css';
 
 export default function App() {
   const { appState, updateAppState } = useAppState();
-  const [screen, setScreen] = useState('input'); // 'input' | 'breakdown' | 'refusal'
+  const [screen, setScreen] = useState('input'); // 'input' | 'breakdown' | 'refusal' | 'grove'
+  const [returnScreen, setReturnScreen] = useState('input');
   const [pandaDialogue, setPandaDialogue] = useState('');
   const [loading, setLoading] = useState(false);
   const [problemText, setProblemText] = useState('');
@@ -69,8 +71,21 @@ export default function App() {
     });
   }
 
+  function handleGoToGrove() {
+    setReturnScreen(screen);
+    setScreen('grove');
+  }
+
+  function handleBackFromGrove() {
+    setScreen(returnScreen);
+  }
+
   if (loading) {
     return showLoading ? <LoadingPanda /> : null;
+  }
+
+  if (screen === 'grove') {
+    return <GroveScreen groveCount={appState.grove_count} onBack={handleBackFromGrove} />;
   }
 
   if (screen === 'breakdown') {
@@ -83,6 +98,7 @@ export default function App() {
         onToggleComplete={handleToggleComplete}
         onAskForMore={handleAskForMore}
         onNewProblem={handleNewProblem}
+        onGoToGrove={handleGoToGrove}
         askForMoreDisabled={appState.energy_level <= 0}
       />
     );
@@ -94,11 +110,11 @@ export default function App() {
         pandaDialogue={pandaDialogue}
         energy={appState.energy_level}
         energyMax={appState.energy_max}
-        onGoToGrove={() => {}}
+        onGoToGrove={handleGoToGrove}
         onNewProblem={handleNewProblem}
       />
     );
   }
 
-  return <InputScreen onSubmit={handleSubmit} disabled={loading} />;
+  return <InputScreen onSubmit={handleSubmit} disabled={loading} onGoToGrove={handleGoToGrove} />;
 }
