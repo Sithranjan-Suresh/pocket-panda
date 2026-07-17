@@ -56,6 +56,14 @@ export default function App() {
     setScreen('input');
   }
 
+  function handleToggleComplete(missionId) {
+    updateAppState({
+      current_missions: appState.current_missions.map((m) =>
+        m.id === missionId ? { ...m, completed: !m.completed } : m
+      ),
+    });
+  }
+
   if (loading) {
     return showLoading ? <LoadingPanda /> : null;
   }
@@ -67,7 +75,7 @@ export default function App() {
         pandaDialogue={pandaDialogue}
         energy={appState.energy_level}
         energyMax={appState.energy_max}
-        onToggleComplete={() => {}}
+        onToggleComplete={handleToggleComplete}
         onAskForMore={handleAskForMore}
         onNewProblem={handleNewProblem}
         askForMoreDisabled={appState.energy_level <= 0}
