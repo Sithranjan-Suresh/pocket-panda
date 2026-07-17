@@ -57,10 +57,15 @@ export default function App() {
   }
 
   function handleToggleComplete(missionId) {
+    const mission = appState.current_missions.find((m) => m.id === missionId);
+    if (!mission) return;
+    const nowCompleted = !mission.completed;
+
     updateAppState({
       current_missions: appState.current_missions.map((m) =>
-        m.id === missionId ? { ...m, completed: !m.completed } : m
+        m.id === missionId ? { ...m, completed: nowCompleted } : m
       ),
+      grove_count: Math.max(0, appState.grove_count + (nowCompleted ? 1 : -1)),
     });
   }
 
