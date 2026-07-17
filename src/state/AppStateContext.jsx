@@ -8,7 +8,7 @@ export const ENERGY_MAX = 100;
  * @property {number} energy_max     - daily reset ceiling
  * @property {number} grove_count    - total completed missions, drives grove visual
  * @property {boolean} demo_seeded   - true for the pre-seeded "3 weeks" demo account
- * @property {import('./mission').Mission[]} current_missions - active breakdown, cleared on new input
+ * @property {import('./mission.js').Mission[]} current_missions - active breakdown, cleared on new input
  */
 
 /** @type {AppState} */
