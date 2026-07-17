@@ -1,7 +1,8 @@
 // Vercel serverless function: POST /api/breakdown
-// Stub implementation — returns hardcoded mock data matching the target
-// response schema so the frontend can be built against a stable contract
-// before the real LLM call is wired up (see engineering_spec.md).
+// Proxies the structured breakdown call to the LLM so the Anthropic API key
+// never reaches the client bundle (see engineering_spec.md Backend Architecture).
+
+import { callBreakdownLLM } from './_llm.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,23 +17,17 @@ export default async function handler(req, res) {
     return;
   }
 
-  const mockResponse = {
-    missions: [
-      {
-        title: 'Open the syllabus',
-        action_text: 'Just open the file. Don\'t read it yet.',
-        drafted_content: null,
-      },
-      {
-        title: 'Reply to the one email that\'s actually urgent',
-        action_text: 'Send a two-line reply, nothing fancy.',
-        drafted_content: "Hi — got your message, will have this to you by Friday. Thanks for your patience!",
-      },
-    ],
-    panda_dialogue: "Okay. Two things. That's it for now.",
-    energy_cost: 30,
-    refusal: false,
-  };
-
-  res.status(200).json(mockResponse);
+  try {
+    const result = await callBreakdownLLM(problem_text, current_energy);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('breakdown LLM call failed:', err);
+    // Stay in character even on failure — never surface a raw error to the user.
+    res.status(200).json({
+      missions: [],
+      panda_dialogue: "Hmm, my brain fogged up for a second there. Try that again?",
+      energy_cost: 0,
+      refusal: false,
+    });
+  }
 }
