@@ -13,15 +13,16 @@ export default function App() {
   const [screen, setScreen] = useState('input'); // 'input' | 'breakdown' | 'refusal'
   const [pandaDialogue, setPandaDialogue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [problemText, setProblemText] = useState('');
   const showLoading = useDelayedVisible(loading);
 
-  async function handleSubmit(problemText) {
+  async function requestBreakdown(text) {
     setLoading(true);
     try {
       const res = await fetch('/api/breakdown', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ problem_text: problemText, current_energy: appState.energy_level }),
+        body: JSON.stringify({ problem_text: text, current_energy: appState.energy_level }),
       });
       const data = await res.json();
 
@@ -40,8 +41,18 @@ export default function App() {
     }
   }
 
+  function handleSubmit(text) {
+    setProblemText(text);
+    requestBreakdown(text);
+  }
+
+  function handleAskForMore() {
+    requestBreakdown(problemText);
+  }
+
   function handleNewProblem() {
     updateAppState({ current_missions: [] });
+    setProblemText('');
     setScreen('input');
   }
 
@@ -57,9 +68,9 @@ export default function App() {
         energy={appState.energy_level}
         energyMax={appState.energy_max}
         onToggleComplete={() => {}}
-        onAskForMore={() => {}}
+        onAskForMore={handleAskForMore}
         onNewProblem={handleNewProblem}
-        askForMoreDisabled={false}
+        askForMoreDisabled={appState.energy_level <= 0}
       />
     );
   }
