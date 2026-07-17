@@ -182,6 +182,33 @@
   50% { transform: scale(1.08) rotate(-4deg); }
 }
 
+.refusal-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 24px;
+  border-radius: 12px;
+  background: #1c1f2b;
+  color: #d8d8e8;
+  text-align: center;
+}
+
+.refusal-state__avatar {
+  font-size: 3rem;
+}
+
+.refusal-state__text {
+  font-size: 1.1rem;
+  font-style: italic;
+  max-width: 32ch;
+}
+
+.refusal-state__actions {
+  display: flex;
+  gap: 12px;
+}
+
 .ticks {
   position: relative;
   width: 100%;
