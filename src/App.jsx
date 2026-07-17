@@ -84,12 +84,11 @@ export default function App() {
     return showLoading ? <LoadingPanda /> : null;
   }
 
+  let content;
   if (screen === 'grove') {
-    return <GroveScreen groveCount={appState.grove_count} onBack={handleBackFromGrove} />;
-  }
-
-  if (screen === 'breakdown') {
-    return (
+    content = <GroveScreen groveCount={appState.grove_count} onBack={handleBackFromGrove} />;
+  } else if (screen === 'breakdown') {
+    content = (
       <BreakdownScreen
         missions={appState.current_missions}
         pandaDialogue={pandaDialogue}
@@ -102,10 +101,8 @@ export default function App() {
         askForMoreDisabled={appState.energy_level <= 0}
       />
     );
-  }
-
-  if (screen === 'refusal') {
-    return (
+  } else if (screen === 'refusal') {
+    content = (
       <RefusalState
         pandaDialogue={pandaDialogue}
         energy={appState.energy_level}
@@ -114,7 +111,13 @@ export default function App() {
         onNewProblem={handleNewProblem}
       />
     );
+  } else {
+    content = <InputScreen onSubmit={handleSubmit} disabled={loading} onGoToGrove={handleGoToGrove} />;
   }
 
-  return <InputScreen onSubmit={handleSubmit} disabled={loading} onGoToGrove={handleGoToGrove} />;
+  return (
+    <div className="screen-transition" key={screen}>
+      {content}
+    </div>
+  );
 }
