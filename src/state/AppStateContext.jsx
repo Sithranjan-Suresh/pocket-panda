@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { loadPersistedState, savePersistedState } from './persistence.js';
 
 export const ENERGY_MAX = 100;
 
@@ -23,7 +24,14 @@ export const initialAppState = {
 const AppStateContext = createContext(null);
 
 export function AppStateProvider({ children, initialState = initialAppState }) {
-  const [appState, setAppState] = useState(initialState);
+  const [appState, setAppState] = useState(() => ({
+    ...initialState,
+    ...loadPersistedState(),
+  }));
+
+  useEffect(() => {
+    savePersistedState({ energy_level: appState.energy_level, grove_count: appState.grove_count });
+  }, [appState.energy_level, appState.grove_count]);
 
   function updateAppState(partial) {
     setAppState((prev) => ({ ...prev, ...partial }));
