@@ -10,8 +10,8 @@
   --energy-track: #ece7d8;
   --shadow: rgba(60, 50, 30, 0.08) 0 4px 14px -2px;
 
-  --sans: 'Segoe UI', system-ui, Roboto, sans-serif;
-  --heading: 'Segoe UI', system-ui, Roboto, sans-serif;
+  --sans: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+  --heading: 'Fraunces', Georgia, serif;
 
   font: 18px/150% var(--sans);
   letter-spacing: 0.1px;
