@@ -21,17 +21,38 @@ export const initialAppState = {
   current_missions: [],
 };
 
+/**
+ * Hardcoded "3 weeks in" demo state — a grown grove with full energy, reachable
+ * via ?demo=true. Never touches localStorage, so the demo moment never depends
+ * on live data or timing (see engineering_spec.md Deployment Strategy).
+ * @type {AppState}
+ */
+export const demoSeededState = {
+  energy_level: ENERGY_MAX,
+  energy_max: ENERGY_MAX,
+  grove_count: 47,
+  demo_seeded: true,
+  current_missions: [],
+};
+
+export function isDemoRequested() {
+  if (typeof window === 'undefined') return false;
+  return new URLSearchParams(window.location.search).get('demo') === 'true';
+}
+
 const AppStateContext = createContext(null);
 
 export function AppStateProvider({ children, initialState = initialAppState }) {
-  const [appState, setAppState] = useState(() => ({
-    ...initialState,
-    ...loadPersistedState(),
-  }));
+  const demoMode = isDemoRequested();
+
+  const [appState, setAppState] = useState(() =>
+    demoMode ? demoSeededState : { ...initialState, ...loadPersistedState() }
+  );
 
   useEffect(() => {
+    if (demoMode) return; // demo state is never persisted or overwritten
     savePersistedState({ energy_level: appState.energy_level, grove_count: appState.grove_count });
-  }, [appState.energy_level, appState.grove_count]);
+  }, [demoMode, appState.energy_level, appState.grove_count]);
 
   function updateAppState(partial) {
     setAppState((prev) => ({ ...prev, ...partial }));
