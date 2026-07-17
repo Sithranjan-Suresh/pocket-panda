@@ -161,6 +161,27 @@
   }
 }
 
+.loading-panda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.loading-panda__avatar {
+  font-size: 2.5rem;
+}
+
+.loading-panda__avatar--chewing {
+  animation: chew 1.1s ease-in-out infinite;
+}
+
+@keyframes chew {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(-4deg); }
+}
+
 .ticks {
   position: relative;
   width: 100%;
