@@ -30,3 +30,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Raw generated art (source intermediates; shipped as .webp)
+public/film/*.png
