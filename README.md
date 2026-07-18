@@ -14,7 +14,7 @@ Add `?demo=true` to the URL to see a "3 weeks in" grown bamboo grove without nee
 
 ## What's actually implemented
 
-- **Free-text problem → structured breakdown.** One LLM call (Groq, `llama-3.3-70b-versatile`) returns a hard-capped 2–4 missions via forced tool-calling — never free-text parsing, so a malformed response is structurally impossible, not just handled.
+- **Two-step LLM pipeline, not a single prompt.** A planning call reads the raw problem first and commits to an overwhelm level, mission count, and energy cost with a one-line rationale — *before* any mission content is drafted. A second call then generates the actual missions conditioned on that plan. If planning fails for any reason, drafting proceeds unconditioned rather than ever blocking the user. Both calls use forced tool-calling (Groq, `llama-3.3-70b-versatile`) — never free-text parsing, so a malformed response is structurally impossible, not just handled.
 - **Server-side validation guardrail** that silently retries once if the model ever breaks its own rules (e.g. returns 5 missions), with unit tests covering the validator.
 - **The refusal mechanic.** Energy is tracked client-side and sent with every request; when the cost would exceed what's left, the panda returns an in-character refusal instead of new missions — verified reliable across repeated live trials, not just designed to work.
 - **Drafted first steps.** When a mission involves writing to someone (an email, a text, an apology), the model drafts a short ready-to-send message, copyable with one click.
@@ -46,7 +46,10 @@ Add `?demo=true` to the URL to see a "3 weeks in" grown bamboo grove without nee
 [POST /api/breakdown]  — Vercel serverless function
    |
    v
-[Groq structured tool-call]  — forced schema, silent-retry guardrail
+[Groq: plan_breakdown]  — severity read, mission count, energy cost
+   |
+   v
+[Groq: draft_breakdown]  — missions conditioned on the plan, forced schema, silent-retry guardrail
    |
    v
 [Client state: energy_level, grove_count]  — Context + localStorage
