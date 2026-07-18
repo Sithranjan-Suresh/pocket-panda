@@ -19,13 +19,38 @@
 /* Shared panda + energy elements */
 
 .panda-avatar {
-  font-size: 2.5rem;
-  line-height: 1;
-  text-align: center;
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
 }
 
-.panda-avatar--thinking {
+.panda-avatar__img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.panda-avatar__badge {
+  position: absolute;
+  bottom: -4px;
+  right: -6px;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.panda-avatar--thinking .panda-avatar__img {
   animation: chew 1.1s ease-in-out infinite;
+}
+
+.loading-panda__avatar,
+.refusal-state__avatar {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: 0 auto;
 }
 
 @keyframes chew {
