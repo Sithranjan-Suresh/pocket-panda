@@ -18,6 +18,8 @@ export default function App() {
   const [pandaRead, setPandaRead] = useState(null);
   const [loading, setLoading] = useState(false);
   const [problemText, setProblemText] = useState('');
+  const [groveJustGrew, setGroveJustGrew] = useState(false);
+  const [toast, setToast] = useState(null); // { key, text } | null
   const showLoading = useDelayedVisible(loading);
 
   async function requestBreakdown(text) {
@@ -80,6 +82,12 @@ export default function App() {
       ),
       grove_count: Math.max(0, appState.grove_count + (nowCompleted ? 1 : -1)),
     });
+
+    setGroveJustGrew(nowCompleted);
+    if (nowCompleted) {
+      setToast({ key: Date.now(), text: '+1 to your grove 🎋' });
+      setTimeout(() => setToast(null), 2200);
+    }
   }
 
   function handleGoToGrove() {
@@ -88,6 +96,7 @@ export default function App() {
   }
 
   function handleBackFromGrove() {
+    setGroveJustGrew(false);
     setScreen(returnScreen);
   }
 
@@ -95,7 +104,9 @@ export default function App() {
   if (loading) {
     content = showLoading ? <LoadingPanda /> : null;
   } else if (screen === 'grove') {
-    content = <GroveScreen groveCount={appState.grove_count} onBack={handleBackFromGrove} />;
+    content = (
+      <GroveScreen groveCount={appState.grove_count} justGrew={groveJustGrew} onBack={handleBackFromGrove} />
+    );
   } else if (screen === 'breakdown') {
     content = (
       <BreakdownScreen
@@ -143,6 +154,11 @@ export default function App() {
           </div>
         </div>
       </main>
+      {toast && (
+        <div className="grove-toast" key={toast.key}>
+          {toast.text}
+        </div>
+      )}
     </>
   );
 }
