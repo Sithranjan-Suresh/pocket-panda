@@ -409,4 +409,17 @@
   .film__leafword {
     font-size: 0.85rem !important;
   }
+
+  /* Move the skip button out of the bottom-center hint's way on narrow screens */
+  .film__skip {
+    top: 18px;
+    bottom: auto;
+    right: 18px;
+    font-size: 0.75rem;
+    padding: 7px 13px;
+  }
+
+  .film__hint {
+    bottom: 4vh;
+  }
 }
