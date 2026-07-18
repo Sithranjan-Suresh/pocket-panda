@@ -286,6 +286,20 @@
   z-index: 4;
 }
 
+/* Soft radial scrim (never a hard box) for legibility over bright sky/moon */
+.film__hero::before {
+  content: '';
+  position: absolute;
+  top: -6vh;
+  left: 50%;
+  width: min(90vw, 900px);
+  height: 34vh;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 40%, rgba(10, 18, 13, 0.4) 0%, rgba(10, 18, 13, 0) 72%);
+  pointer-events: none;
+  z-index: -1;
+}
+
 .film__wordmark {
   margin: 0;
   font-family: var(--heading);
@@ -293,7 +307,7 @@
   font-size: clamp(3rem, 11vw, 6.5rem);
   letter-spacing: -0.02em;
   color: #f4ecd8;
-  text-shadow: 0 4px 44px rgba(10, 20, 14, 0.65), 0 2px 10px rgba(10, 20, 14, 0.5);
+  text-shadow: 0 2px 8px rgba(10, 20, 14, 0.55), 0 1px 3px rgba(10, 20, 14, 0.4);
   overflow: hidden;
   line-height: 1.1;
 }
