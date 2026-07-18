@@ -2,6 +2,8 @@
 
 **A low-energy panda companion that turns an overwhelming problem into the 2–4 things you can actually do today — and refuses to give you more.**
 
+🔗 **Live:** [pocketpanda.vercel.app](https://pocketpanda.vercel.app)
+
 Every productivity tool competes by giving you more: more tasks, more tracking, more dashboards. PocketPanda does the opposite, on purpose. Pandas conserve energy and rest — so the panda has a limited daily energy budget. It breaks your problem into a small number of tiny, doable missions, then visibly refuses to give you more once its energy runs out, sending you off to rest instead of spiraling into a bigger list.
 
 Progress shows up as a slowly growing bamboo grove — not a guilt-inducing streak counter.
@@ -18,7 +20,8 @@ Add `?demo=true` to the URL to see a "3 weeks in" grown bamboo grove without nee
 - **Server-side validation guardrail** that silently retries once if the model ever breaks its own rules (e.g. returns 5 missions), with unit tests covering the validator.
 - **The refusal mechanic.** Energy is tracked client-side and sent with every request; when the cost would exceed what's left, the panda returns an in-character refusal instead of new missions — verified reliable across repeated live trials, not just designed to work.
 - **Drafted first steps.** When a mission involves writing to someone (an email, a text, an apology), the model drafts a short ready-to-send message, copyable with one click.
-- **Persistent bamboo grove.** Every completed mission grows the grove, stored in `localStorage` — with a hardcoded seeded state for demo reliability, independent of live data.
+- **Persistent bamboo grove.** Every completed mission grows the grove, stored in `localStorage` — with a hardcoded seeded state for demo reliability, independent of live data. Downloadable as a shareable card image.
+- **A real daily energy reset.** Energy is stamped with the calendar day it was last saved; a genuine day boundary resets it to full, revealed with an animated banner and a glowing energy-bar refill rather than silently snapping back.
 - **A hand-illustrated scroll intro** ("Follow the Panda") — GSAP + Lenis scroll-driven film built around four Higgsfield-generated storybook plates of the same panda character, leading the visitor through a bamboo forest into the real, working input screen. No `<video>` scrubbing (which stutters) — plates crossfade with Ken Burns motion, ambient mist, and wandering fireflies, all GPU-composited (verified flat ~17ms frame budget, no jank).
 - **Graceful degradation everywhere:** network failures fall back to an in-character line instead of a raw error; `prefers-reduced-motion` gets a static poster instead of the scroll film; empty/short/rambling input all produce sensible breakdowns instead of errors.
 
@@ -65,6 +68,6 @@ npm run dev
 
 ## Project docs
 
-- [`full_context.md`](./full_context.md) — vision, problem, target users, differentiators
-- [`product_spec.md`](./product_spec.md) — requirements, user stories, edge cases, feature priority
-- [`engineering_spec.md`](./engineering_spec.md) — architecture, data model, API design
+- [`docs/full_context.md`](./docs/full_context.md) — vision, problem, target users, differentiators
+- [`docs/product_spec.md`](./docs/product_spec.md) — requirements, user stories, edge cases, feature priority
+- [`docs/engineering_spec.md`](./docs/engineering_spec.md) — architecture, data model, API design
