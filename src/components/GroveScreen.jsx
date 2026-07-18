@@ -1,4 +1,18 @@
+import { useState } from 'react';
+import { downloadGroveCard } from '../lib/groveCard.js';
+
 export default function GroveScreen({ groveCount, justGrew, onBack }) {
+  const [sharing, setSharing] = useState(false);
+
+  async function handleShare() {
+    setSharing(true);
+    try {
+      await downloadGroveCard(groveCount);
+    } finally {
+      setSharing(false);
+    }
+  }
+
   return (
     <div className="grove-screen">
       <h1 className="grove-screen__title">Your bamboo grove</h1>
@@ -23,9 +37,14 @@ export default function GroveScreen({ groveCount, justGrew, onBack }) {
       {groveCount === 0 && (
         <p className="grove-screen__empty">Nothing here yet. Complete a mission and it'll grow.</p>
       )}
-      <button type="button" onClick={onBack}>
-        Back
-      </button>
+      <div className="grove-screen__actions">
+        <button type="button" onClick={handleShare} disabled={sharing}>
+          {sharing ? 'Preparing...' : 'Share my grove'}
+        </button>
+        <button type="button" onClick={onBack}>
+          Back
+        </button>
+      </div>
     </div>
   );
 }

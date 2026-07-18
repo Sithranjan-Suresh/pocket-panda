@@ -326,6 +326,11 @@
   text-align: center;
 }
 
+.grove-screen__actions {
+  display: flex;
+  gap: 10px;
+}
+
 .grove-screen__count {
   color: var(--text);
   opacity: 0.85;
