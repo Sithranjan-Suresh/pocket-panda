@@ -94,6 +94,21 @@
   text-align: right;
 }
 
+.panda-read {
+  text-align: center;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text);
+  opacity: 0.65;
+  margin: 0 0 12px;
+  cursor: help;
+}
+
+.panda-read strong {
+  font-style: normal;
+  color: var(--accent-dark);
+}
+
 .panda-dialogue {
   display: flex;
   align-items: flex-start;

@@ -15,6 +15,7 @@ export default function App() {
   const [screen, setScreen] = useState('input'); // 'input' | 'breakdown' | 'refusal' | 'grove'
   const [returnScreen, setReturnScreen] = useState('input');
   const [pandaDialogue, setPandaDialogue] = useState('');
+  const [pandaRead, setPandaRead] = useState(null);
   const [loading, setLoading] = useState(false);
   const [problemText, setProblemText] = useState('');
   const showLoading = useDelayedVisible(loading);
@@ -31,6 +32,7 @@ export default function App() {
       const data = await res.json();
 
       setPandaDialogue(data.panda_dialogue);
+      setPandaRead(data.panda_read ?? null);
       if (data.refusal) {
         setScreen('refusal');
       } else {
@@ -44,6 +46,7 @@ export default function App() {
       // Network hiccup or the API being unreachable — stay in character,
       // never surface a raw error message or a blank/broken screen.
       setPandaDialogue("Lost my train of thought for a second there. Try again?");
+      setPandaRead(null);
     } finally {
       setLoading(false);
     }
@@ -62,6 +65,7 @@ export default function App() {
     updateAppState({ current_missions: [] });
     setProblemText('');
     setPandaDialogue('');
+    setPandaRead(null);
     setScreen('input');
   }
 
@@ -97,6 +101,7 @@ export default function App() {
       <BreakdownScreen
         missions={appState.current_missions}
         pandaDialogue={pandaDialogue}
+        pandaRead={pandaRead}
         energy={appState.energy_level}
         energyMax={appState.energy_max}
         onToggleComplete={handleToggleComplete}
@@ -110,6 +115,7 @@ export default function App() {
     content = (
       <RefusalState
         pandaDialogue={pandaDialogue}
+        pandaRead={pandaRead}
         energy={appState.energy_level}
         energyMax={appState.energy_max}
         onGoToGrove={handleGoToGrove}

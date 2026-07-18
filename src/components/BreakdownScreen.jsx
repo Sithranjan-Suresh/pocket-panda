@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import EnergyBar from './EnergyBar.jsx';
 import PandaDialogueBubble from './PandaDialogueBubble.jsx';
+import PandaRead from './PandaRead.jsx';
 
 function DraftedContent({ text }) {
   const [copied, setCopied] = useState(false);
@@ -45,6 +46,7 @@ function MissionCard({ mission, onToggleComplete }) {
 export default function BreakdownScreen({
   missions,
   pandaDialogue,
+  pandaRead,
   energy,
   energyMax,
   onToggleComplete,
@@ -56,6 +58,7 @@ export default function BreakdownScreen({
   return (
     <div className="breakdown-screen">
       <EnergyBar energy={energy} energyMax={energyMax} />
+      <PandaRead read={pandaRead} />
       <PandaDialogueBubble text={pandaDialogue} />
       <ul className="breakdown-screen__missions">
         {missions.map((mission) => (

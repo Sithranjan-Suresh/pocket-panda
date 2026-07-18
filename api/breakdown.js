@@ -1,5 +1,5 @@
 // Vercel serverless function: POST /api/breakdown
-// Proxies the structured breakdown call to the LLM so the Anthropic API key
+// Proxies the structured breakdown call to the LLM so the Groq API key
 // never reaches the client bundle (see engineering_spec.md Backend Architecture).
 
 import { callBreakdownLLM } from './_llm.js';

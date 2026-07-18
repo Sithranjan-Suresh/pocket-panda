@@ -155,7 +155,10 @@ export async function callBreakdownLLM(problem_text, current_energy) {
     try {
       const result = await requestBreakdown(problem_text, current_energy, plan);
       if (isValidBreakdownResponse(result)) {
-        return result;
+        return {
+          ...result,
+          panda_read: plan ? { level: plan.overwhelm_level, rationale: plan.rationale } : null,
+        };
       }
       lastError = new Error('LLM response failed validation');
     } catch (err) {
