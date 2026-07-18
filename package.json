@@ -1,7 +1,9 @@
 {
   "name": "pocket-panda",
+  "description": "A low-energy panda companion that turns an overwhelming problem into 2-4 doable missions — and refuses to give you more.",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
