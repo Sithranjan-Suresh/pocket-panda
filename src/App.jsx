@@ -28,7 +28,11 @@ export default function App() {
       const res = await fetch('/api/breakdown', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ problem_text: text, current_energy: appState.energy_level }),
+        body: JSON.stringify({
+          problem_text: text,
+          current_energy: appState.energy_level,
+          grove_count: appState.grove_count,
+        }),
       });
       if (!res.ok) throw new Error(`request failed: ${res.status}`);
       const data = await res.json();

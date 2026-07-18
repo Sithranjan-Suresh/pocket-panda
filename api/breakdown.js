@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { problem_text, current_energy } = req.body ?? {};
+  const { problem_text, current_energy, grove_count } = req.body ?? {};
 
   if (typeof problem_text !== 'string' || typeof current_energy !== 'number') {
     res.status(400).json({ error: 'problem_text (string) and current_energy (number) are required' });
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const result = await callBreakdownLLM(problem_text, current_energy);
+    const result = await callBreakdownLLM(problem_text, current_energy, typeof grove_count === 'number' ? grove_count : 0);
     res.status(200).json(result);
   } catch (err) {
     console.error('breakdown LLM call failed:', err);

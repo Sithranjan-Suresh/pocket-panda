@@ -103,11 +103,24 @@ async function planBreakdown(problem_text, current_energy) {
   }
 }
 
+function relationshipContext(grove_count) {
+  if (!grove_count || grove_count <= 0) {
+    return 'This is a first-time (or fresh) user — welcome them gently, no assumed familiarity.';
+  }
+  if (grove_count < 10) {
+    return 'A newer returning user (a few completed missions so far) — friendly, not yet overly familiar.';
+  }
+  return (
+    "A regular, returning user with a real history here (many completed missions) — let warmth and " +
+    'familiarity show subtly in your tone, like an old low-key friend. Never smugness, never guilt about gaps.'
+  );
+}
+
 /**
  * Step 2: draft the actual missions/dialogue, conditioned on the plan from
  * step 1 when available.
  */
-async function requestBreakdown(problem_text, current_energy, plan) {
+async function requestBreakdown(problem_text, current_energy, plan, grove_count) {
   const planContext = plan
     ? `\n\nPlanning pass already assessed this: overwhelm_level=${plan.overwhelm_level}, ` +
       `rationale="${plan.rationale}", recommended_mission_count=${plan.recommended_mission_count}, ` +
@@ -122,7 +135,9 @@ async function requestBreakdown(problem_text, current_energy, plan) {
       { role: 'system', content: SYSTEM_PROMPT },
       {
         role: 'user',
-        content: `problem_text: ${problem_text}\ncurrent_energy: ${current_energy}${planContext}`,
+        content:
+          `problem_text: ${problem_text}\ncurrent_energy: ${current_energy}${planContext}` +
+          `\n\nRelationship context: ${relationshipContext(grove_count)}`,
       },
     ],
     tools: [BREAKDOWN_TOOL],
@@ -145,15 +160,16 @@ const MAX_ATTEMPTS = 2;
  * unconditioned rather than ever blocking the user-facing call.
  * @param {string} problem_text
  * @param {number} current_energy
+ * @param {number} [grove_count] total completed missions — shifts tone toward familiarity for returning users
  * @returns {Promise<{missions: Array, panda_dialogue: string, energy_cost: number, refusal: boolean}>}
  */
-export async function callBreakdownLLM(problem_text, current_energy) {
+export async function callBreakdownLLM(problem_text, current_energy, grove_count = 0) {
   const plan = await planBreakdown(problem_text, current_energy);
 
   let lastError;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      const result = await requestBreakdown(problem_text, current_energy, plan);
+      const result = await requestBreakdown(problem_text, current_energy, plan, grove_count);
       if (isValidBreakdownResponse(result)) {
         return {
           ...result,
