@@ -97,16 +97,16 @@
   position: absolute;
   left: -20%;
   width: 140%;
-  height: 22vh;
+  height: 26vh;
   background: linear-gradient(
     90deg,
-    rgba(214, 230, 214, 0) 0%,
-    rgba(214, 230, 214, 0.16) 25%,
-    rgba(214, 230, 214, 0.05) 50%,
-    rgba(214, 230, 214, 0.18) 75%,
-    rgba(214, 230, 214, 0) 100%
+    rgba(220, 234, 220, 0) 0%,
+    rgba(220, 234, 220, 0.32) 25%,
+    rgba(220, 234, 220, 0.1) 50%,
+    rgba(220, 234, 220, 0.34) 75%,
+    rgba(220, 234, 220, 0) 100%
   );
-  filter: blur(2px);
+  filter: blur(3px);
   opacity: 0;
   pointer-events: none;
   z-index: 1;
@@ -114,19 +114,20 @@
 }
 
 .film__mist--a {
-  top: 58vh;
+  top: 56vh;
+  height: 24vh;
   animation: film-mist-drift 34s ease-in-out infinite alternate;
 }
 
 .film__mist--b {
-  top: 34vh;
-  height: 16vh;
+  top: 30vh;
+  height: 20vh;
   animation: film-mist-drift 46s ease-in-out infinite alternate-reverse;
 }
 
 .film__mist--c {
-  top: 76vh;
-  height: 18vh;
+  top: 74vh;
+  height: 22vh;
   animation: film-mist-drift 40s ease-in-out infinite alternate;
   animation-delay: -18s;
 }
@@ -146,10 +147,10 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse 42% 38% at 44% 62%,
-    rgba(255, 233, 163, 0.22) 0%,
-    rgba(255, 233, 163, 0.07) 45%,
-    rgba(255, 233, 163, 0) 70%
+    ellipse 46% 42% at 44% 62%,
+    rgba(255, 233, 163, 0.38) 0%,
+    rgba(255, 233, 163, 0.14) 45%,
+    rgba(255, 233, 163, 0) 72%
   );
   opacity: 0;
   pointer-events: none;
