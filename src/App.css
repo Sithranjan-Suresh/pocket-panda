@@ -87,6 +87,66 @@
   transition: width 0.4s ease;
 }
 
+.energy-bar__fill--reset {
+  animation: energy-refill 1.4s ease-out;
+}
+
+@keyframes energy-refill {
+  0% {
+    width: 0% !important;
+    box-shadow: 0 0 0 rgba(255, 233, 163, 0);
+  }
+  60% {
+    box-shadow: 0 0 12px 2px rgba(255, 233, 163, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(255, 233, 163, 0);
+  }
+}
+
+/* Daily energy reset banner */
+
+.energy-reset-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #3a3564, #5c4a8a);
+  color: #f4ecd8;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35), 0 0 20px rgba(255, 233, 163, 0.25);
+  z-index: 20;
+  animation: reset-banner-in-out 4.5s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.energy-reset-banner__moon {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 0 6px rgba(255, 233, 163, 0.8));
+}
+
+@keyframes reset-banner-in-out {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-14px) scale(0.95);
+  }
+  10%,
+  85% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-14px) scale(0.95);
+  }
+}
+
 .energy-bar__value {
   font-size: 0.75rem;
   color: var(--text);

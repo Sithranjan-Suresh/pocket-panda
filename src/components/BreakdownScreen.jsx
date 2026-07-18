@@ -55,6 +55,7 @@ export default function BreakdownScreen({
   pandaRead,
   energy,
   energyMax,
+  energyJustReset,
   onToggleComplete,
   onAskForMore,
   onNewProblem,
@@ -63,7 +64,7 @@ export default function BreakdownScreen({
 }) {
   return (
     <div className="breakdown-screen">
-      <EnergyBar energy={energy} energyMax={energyMax} />
+      <EnergyBar energy={energy} energyMax={energyMax} justReset={energyJustReset} />
       <PandaRead read={pandaRead} />
       <PandaDialogueBubble text={pandaDialogue} />
       <ul className="breakdown-screen__missions">

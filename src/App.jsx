@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ScrollFilm from './components/ScrollFilm.jsx';
 import InputScreen from './components/InputScreen.jsx';
 import BreakdownScreen from './components/BreakdownScreen.jsx';
 import RefusalState from './components/RefusalState.jsx';
 import GroveScreen from './components/GroveScreen.jsx';
 import LoadingPanda from './components/LoadingPanda.jsx';
+import EnergyResetBanner from './components/EnergyResetBanner.jsx';
 import { createMission } from './state/mission.js';
 import { useAppState } from './state/AppStateContext.jsx';
 import { useDelayedVisible } from './hooks/useDelayedVisible.js';
@@ -22,6 +23,14 @@ export default function App() {
   const [toast, setToast] = useState(null); // { key, text } | null
   const [justRefused, setJustRefused] = useState(false);
   const showLoading = useDelayedVisible(loading);
+
+  useEffect(() => {
+    if (!appState.energy_just_reset) return;
+    // Matches the .energy-reset-banner CSS animation duration (4.5s) — keep in sync.
+    const timer = setTimeout(() => updateAppState({ energy_just_reset: false }), 4500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appState.energy_just_reset]);
 
   async function requestBreakdown(text) {
     setLoading(true);
@@ -122,6 +131,7 @@ export default function App() {
         pandaRead={pandaRead}
         energy={appState.energy_level}
         energyMax={appState.energy_max}
+        energyJustReset={appState.energy_just_reset}
         onToggleComplete={handleToggleComplete}
         onAskForMore={handleAskForMore}
         onNewProblem={handleNewProblem}
@@ -149,6 +159,7 @@ export default function App() {
         pandaDialogue={pandaDialogue}
         energy={appState.energy_level}
         energyMax={appState.energy_max}
+        energyJustReset={appState.energy_just_reset}
         justRefused={justRefused}
       />
     );
@@ -169,6 +180,7 @@ export default function App() {
           {toast.text}
         </div>
       )}
+      {appState.energy_just_reset && <EnergyResetBanner />}
     </>
   );
 }

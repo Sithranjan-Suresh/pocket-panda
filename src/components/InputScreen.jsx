@@ -9,6 +9,7 @@ export default function InputScreen({
   pandaDialogue,
   energy,
   energyMax,
+  energyJustReset,
   justRefused,
 }) {
   const [text, setText] = useState('');
@@ -22,7 +23,7 @@ export default function InputScreen({
 
   return (
     <form className="input-screen" onSubmit={handleSubmit}>
-      <EnergyBar energy={energy} energyMax={energyMax} />
+      <EnergyBar energy={energy} energyMax={energyMax} justReset={energyJustReset} />
       <h1 className="input-screen__prompt">What's sitting on your chest?</h1>
       {justRefused && (
         <p className="input-screen__refused-note">

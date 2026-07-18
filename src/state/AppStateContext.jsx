@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { loadPersistedState, savePersistedState } from './persistence.js';
+import { loadPersistedState, savePersistedState, isNewDay } from './persistence.js';
 
 export const ENERGY_MAX = 100;
 
@@ -9,6 +9,7 @@ export const ENERGY_MAX = 100;
  * @property {number} energy_max     - daily reset ceiling
  * @property {number} grove_count    - total completed missions, drives grove visual
  * @property {boolean} demo_seeded   - true for the pre-seeded "3 weeks" demo account
+ * @property {boolean} energy_just_reset - transient, in-memory only: true for one render after a daily reset, to trigger the celebratory UI
  * @property {import('./mission.js').Mission[]} current_missions - active breakdown, cleared on new input
  */
 
@@ -18,6 +19,7 @@ export const initialAppState = {
   energy_max: ENERGY_MAX,
   grove_count: 0,
   demo_seeded: false,
+  energy_just_reset: false,
   current_missions: [],
 };
 
@@ -32,6 +34,7 @@ export const demoSeededState = {
   energy_max: ENERGY_MAX,
   grove_count: 47,
   demo_seeded: true,
+  energy_just_reset: false,
   current_missions: [],
 };
 
@@ -40,13 +43,23 @@ export function isDemoRequested() {
   return new URLSearchParams(window.location.search).get('demo') === 'true';
 }
 
+function resolveInitialState(initialState) {
+  const loaded = loadPersistedState();
+  const merged = { ...initialState, ...loaded };
+
+  if (isNewDay(loaded) && (loaded.energy_level ?? initialState.energy_level) < merged.energy_max) {
+    return { ...merged, energy_level: merged.energy_max, energy_just_reset: true };
+  }
+  return merged;
+}
+
 const AppStateContext = createContext(null);
 
 export function AppStateProvider({ children, initialState = initialAppState }) {
   const demoMode = isDemoRequested();
 
   const [appState, setAppState] = useState(() =>
-    demoMode ? demoSeededState : { ...initialState, ...loadPersistedState() }
+    demoMode ? demoSeededState : resolveInitialState(initialState)
   );
 
   useEffect(() => {
