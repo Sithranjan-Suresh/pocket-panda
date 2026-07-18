@@ -29,3 +29,16 @@ export function savePersistedState({ energy_level, grove_count }) {
     // localStorage unavailable (e.g. private browsing) — persistence is best-effort only.
   }
 }
+
+/**
+ * Whether this browser has been here before — used to skip the scroll-film
+ * intro on repeat visits and land straight on the functional app.
+ * @returns {boolean}
+ */
+export function hasPriorVisit() {
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== null;
+  } catch {
+    return false;
+  }
+}

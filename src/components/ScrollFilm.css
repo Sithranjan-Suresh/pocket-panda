@@ -326,6 +326,27 @@
   text-shadow: 0 2px 16px rgba(10, 20, 14, 0.7);
 }
 
+/* Prominent, always-clickable CTA in the hero — the real way to skip the
+   story, not a subtle corner hint most visitors will never notice. */
+.film__cta {
+  pointer-events: auto;
+  margin-top: 1.6em;
+  padding: 12px 26px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #16241c;
+  background: #f4ecd8;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.film__cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
 .film__hint {
   position: absolute;
   bottom: 5vh;

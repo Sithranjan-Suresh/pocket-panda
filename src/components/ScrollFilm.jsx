@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { hasPriorVisit } from '../state/persistence.js';
 import './ScrollFilm.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -32,6 +33,14 @@ export default function ScrollFilm() {
     () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     []
   );
+  // Repeat visitors skip the intro entirely and land straight on the app —
+  // the cinematic reveal is a first-impression, not a tax on every reload.
+  // The ?demo=true link always shows the full film; it's for showing off.
+  const isReturning = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    const demoMode = new URLSearchParams(window.location.search).get('demo') === 'true';
+    return !demoMode && hasPriorVisit();
+  }, []);
 
   const fireflies = useMemo(
     () =>
@@ -46,7 +55,10 @@ export default function ScrollFilm() {
   );
 
   useEffect(() => {
-    if (reduced) return undefined;
+    if (reduced || isReturning) {
+      window.__ready = true;
+      return undefined;
+    }
 
     const JUMP = new URLSearchParams(window.location.search).get('jump');
     if (JUMP !== null) history.scrollRestoration = 'manual';
@@ -69,7 +81,7 @@ export default function ScrollFilm() {
         stagger: 0.045,
         delay: 0.15,
       });
-      gsap.from('.film__tagline, .film__hint', {
+      gsap.from('.film__tagline, .film__cta, .film__hint', {
         opacity: 0,
         y: 14,
         duration: 0.9,
@@ -139,21 +151,22 @@ export default function ScrollFilm() {
         .to('.film__glow', { opacity: 0, duration: 0.8 }, 7.6);
     }, filmRef);
 
-    const skipBtn = filmRef.current.querySelector('.film__skip');
+    const skipBtns = filmRef.current.querySelectorAll('.film__skip-trigger');
     const onSkip = () => {
       const app = document.getElementById('panda-app');
       if (!app) return;
       if (lenis) lenis.scrollTo(app, { duration: 1.6 });
       else app.scrollIntoView({ behavior: 'smooth' });
     };
-    skipBtn?.addEventListener('click', onSkip);
+    skipBtns.forEach((b) => b.addEventListener('click', onSkip));
 
+    const cornerSkip = filmRef.current.querySelector('.film__skip');
     const skipTrigger = ScrollTrigger.create({
       trigger: filmRef.current,
       start: 'top top',
       end: 'bottom 92%',
-      onLeave: () => skipBtn?.classList.add('film__skip--hidden'),
-      onEnterBack: () => skipBtn?.classList.remove('film__skip--hidden'),
+      onLeave: () => cornerSkip?.classList.add('film__skip--hidden'),
+      onEnterBack: () => cornerSkip?.classList.remove('film__skip--hidden'),
     });
 
     // Dev contract: ?jump=<y> lands pre-scrolled and settled; __ready gates capture.
@@ -186,12 +199,17 @@ export default function ScrollFilm() {
     }
 
     return () => {
-      skipBtn?.removeEventListener('click', onSkip);
+      skipBtns.forEach((b) => b.removeEventListener('click', onSkip));
       skipTrigger.kill();
       ctx.revert();
       if (lenis) lenis.destroy();
     };
-  }, [reduced]);
+  }, [reduced, isReturning]);
+
+  if (isReturning) {
+    // No film, no scroll tax — straight to the app for anyone who's been here before.
+    return null;
+  }
 
   if (reduced) {
     // Static poster for reduced-motion users: no pin, no smooth scroll, no drift.
@@ -268,6 +286,9 @@ export default function ScrollFilm() {
             ))}
           </h1>
           <p className="film__tagline">Everything feels like too much.</p>
+          <button type="button" className="film__skip-trigger film__cta">
+            Skip the story — try it now →
+          </button>
         </div>
         <p className="film__hint">follow the panda</p>
 
@@ -281,7 +302,7 @@ export default function ScrollFilm() {
           <p className="film__beat-strong">It keeps its energy small — on purpose.</p>
         </div>
 
-        <button type="button" className="film__skip">
+        <button type="button" className="film__skip film__skip-trigger">
           skip to the panda ↓
         </button>
       </div>
