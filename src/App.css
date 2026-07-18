@@ -214,6 +214,18 @@
   color: var(--text-h);
 }
 
+.mission-card__badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent-dark);
+  background: var(--accent-bg);
+  border-radius: 999px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
 .mission-card__action {
   margin: 6px 0 0 26px;
   color: var(--text);
@@ -237,10 +249,30 @@
   color: var(--text-h);
 }
 
-.mission-card__copy {
+.mission-card__draft-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   flex-shrink: 0;
+}
+
+.mission-card__copy,
+.mission-card__send {
   font-size: 0.85rem;
   padding: 4px 10px;
+  text-align: center;
+}
+
+.mission-card__send {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+.mission-card__send:hover {
+  background: var(--accent-bg);
 }
 
 /* Loading state */

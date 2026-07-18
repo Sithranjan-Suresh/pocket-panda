@@ -19,14 +19,19 @@ function DraftedContent({ text }) {
   return (
     <div className="mission-card__draft">
       <p className="mission-card__draft-text">{text}</p>
-      <button type="button" className="mission-card__copy" onClick={handleCopy}>
-        {copied ? 'Copied!' : 'Copy'}
-      </button>
+      <div className="mission-card__draft-actions">
+        <button type="button" className="mission-card__copy" onClick={handleCopy}>
+          {copied ? 'Copied!' : 'Copy'}
+        </button>
+        <a className="mission-card__send" href={`mailto:?body=${encodeURIComponent(text)}`}>
+          Send
+        </a>
+      </div>
     </div>
   );
 }
 
-function MissionCard({ mission, onToggleComplete }) {
+function MissionCard({ mission, isEasiest, onToggleComplete }) {
   return (
     <li className={`mission-card${mission.completed ? ' mission-card--completed' : ''}`}>
       <label className="mission-card__header">
@@ -36,6 +41,7 @@ function MissionCard({ mission, onToggleComplete }) {
           onChange={() => onToggleComplete(mission.id)}
         />
         <span className="mission-card__title">{mission.title}</span>
+        {isEasiest && <span className="mission-card__badge">easiest — start here</span>}
       </label>
       <p className="mission-card__action">{mission.action_text}</p>
       {mission.drafted_content && <DraftedContent text={mission.drafted_content} />}
@@ -61,8 +67,13 @@ export default function BreakdownScreen({
       <PandaRead read={pandaRead} />
       <PandaDialogueBubble text={pandaDialogue} />
       <ul className="breakdown-screen__missions">
-        {missions.map((mission) => (
-          <MissionCard key={mission.id} mission={mission} onToggleComplete={onToggleComplete} />
+        {missions.map((mission, i) => (
+          <MissionCard
+            key={mission.id}
+            mission={mission}
+            isEasiest={i === 0}
+            onToggleComplete={onToggleComplete}
+          />
         ))}
       </ul>
       <div className="breakdown-screen__actions">
