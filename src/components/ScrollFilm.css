@@ -23,14 +23,13 @@
   height: 100svh;
 }
 
-/* Painted plates (Higgsfield art) — full-bleed, Ken Burns via transform */
+/* Painted plates (Higgsfield art) — full-bleed, Ken Burns on the wrapper,
+   slow idle "breathing" on the image inside so no frame is ever static. */
 
-.film__plate {
+.film__plate-wrap {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  overflow: hidden;
   will-change: transform, opacity;
 }
 
@@ -38,6 +37,160 @@
 .film__plate--3,
 .film__plate--4 {
   opacity: 0;
+}
+
+.film__plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.film__idle--1 {
+  animation: film-breathe-pan 26s ease-in-out infinite alternate;
+}
+
+.film__idle--2 {
+  animation: film-pan 24s ease-in-out infinite alternate;
+}
+
+.film__idle--3 {
+  animation: film-breathe 22s ease-in-out infinite alternate;
+}
+
+.film__idle--4 {
+  animation: film-breathe 28s ease-in-out infinite alternate;
+}
+
+@keyframes film-breathe {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.055);
+  }
+}
+
+@keyframes film-pan {
+  from {
+    transform: scale(1.04) translateX(-0.9%);
+  }
+  to {
+    transform: scale(1.04) translateX(0.9%);
+  }
+}
+
+@keyframes film-breathe-pan {
+  from {
+    transform: scale(1.02) translateX(0.6%);
+  }
+  to {
+    transform: scale(1.05) translateX(-0.6%);
+  }
+}
+
+/* Drifting mist bands */
+
+.film__mist {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  height: 22vh;
+  background: linear-gradient(
+    90deg,
+    rgba(214, 230, 214, 0) 0%,
+    rgba(214, 230, 214, 0.16) 25%,
+    rgba(214, 230, 214, 0.05) 50%,
+    rgba(214, 230, 214, 0.18) 75%,
+    rgba(214, 230, 214, 0) 100%
+  );
+  filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+.film__mist--a {
+  top: 58vh;
+  animation: film-mist-drift 34s ease-in-out infinite alternate;
+}
+
+.film__mist--b {
+  top: 34vh;
+  height: 16vh;
+  animation: film-mist-drift 46s ease-in-out infinite alternate-reverse;
+}
+
+.film__mist--c {
+  top: 76vh;
+  height: 18vh;
+  animation: film-mist-drift 40s ease-in-out infinite alternate;
+  animation-delay: -18s;
+}
+
+@keyframes film-mist-drift {
+  from {
+    transform: translateX(-6%);
+  }
+  to {
+    transform: translateX(6%);
+  }
+}
+
+/* Lantern glow — breathes during the dark stretch */
+
+.film__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 42% 38% at 44% 62%,
+    rgba(255, 233, 163, 0.22) 0%,
+    rgba(255, 233, 163, 0.07) 45%,
+    rgba(255, 233, 163, 0) 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  will-change: opacity;
+  animation: film-glow-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes film-glow-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* Firefly wander (outer drift + inner twinkle) */
+
+.film__firefly-drift {
+  position: absolute;
+  animation-name: film-wander;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+}
+
+@keyframes film-wander {
+  0% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(3.2vw, -2.4vh);
+  }
+  66% {
+    transform: translate(-2.2vw, 1.8vh);
+  }
+  100% {
+    transform: translate(1.6vw, -3vh);
+  }
 }
 
 /* Leaf-words */

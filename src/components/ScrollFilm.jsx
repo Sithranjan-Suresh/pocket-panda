@@ -125,8 +125,16 @@ export default function ScrollFilm() {
         .to('.film__seam', { opacity: 1, duration: 0.8 }, 9.2)
         .to('.film__vignette', { opacity: 0, duration: 0.8 }, 9.2);
 
-      // Ambient fireflies bloom in the middle stretch (after all plate tweens)
+      // Ambient layers (created after all plate tweens)
       tl.to('.film__fireflies', { opacity: 1, duration: 1.6 }, 4.2);
+      // Mist rolls in while walking the path, thins out in the grove
+      tl.fromTo('.film__mist--a', { opacity: 0 }, { opacity: 0.5, duration: 1.2 }, 2.4)
+        .fromTo('.film__mist--b', { opacity: 0 }, { opacity: 0.4, duration: 1.2 }, 2.9)
+        .fromTo('.film__mist--c', { opacity: 0 }, { opacity: 0.3, duration: 1.2 }, 3.4)
+        .to('.film__mist--a, .film__mist--b, .film__mist--c', { opacity: 0.12, duration: 1.4 }, 7.7);
+      // Lantern glow breathes through the dark stretch
+      tl.fromTo('.film__glow', { opacity: 0 }, { opacity: 1, duration: 0.8 }, 5.8)
+        .to('.film__glow', { opacity: 0, duration: 0.8 }, 7.6);
     }, filmRef);
 
     const skipBtn = filmRef.current.querySelector('.film__skip');
@@ -201,9 +209,16 @@ export default function ScrollFilm() {
   return (
     <header className="film" ref={filmRef} aria-label="PocketPanda intro">
       <div className="film__stage">
-        {PLATES.map((p) => (
-          <img key={p.src} className={`film__plate ${p.cls}`} src={p.src} alt="" />
+        {PLATES.map((p, i) => (
+          <div key={p.src} className={`film__plate-wrap ${p.cls}`}>
+            <img className={`film__plate film__idle--${i + 1}`} src={p.src} alt="" />
+          </div>
         ))}
+
+        <div className="film__mist film__mist--a" aria-hidden="true" />
+        <div className="film__mist film__mist--b" aria-hidden="true" />
+        <div className="film__mist film__mist--c" aria-hidden="true" />
+        <div className="film__glow" aria-hidden="true" />
 
         <div className="film__leafwords" aria-hidden="true">
           {LEAF_WORDS.map((w, i) => (
@@ -221,15 +236,23 @@ export default function ScrollFilm() {
           {fireflies.map((f, i) => (
             <span
               key={i}
-              className="film__firefly"
+              className="film__firefly-drift"
               style={{
                 left: f.left,
                 top: f.top,
-                animationDelay: f.delay,
-                animationDuration: f.duration,
-                transform: `scale(${f.scale})`,
+                animationDuration: `${14 + i * 1.7}s`,
+                animationDelay: `-${i * 2.3}s`,
               }}
-            />
+            >
+              <span
+                className="film__firefly"
+                style={{
+                  animationDelay: f.delay,
+                  animationDuration: f.duration,
+                  transform: `scale(${f.scale})`,
+                }}
+              />
+            </span>
           ))}
         </div>
 
