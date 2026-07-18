@@ -91,14 +91,16 @@ export default function ScrollFilm() {
 
       // Plate 1 — the trailhead wave (0 – 3): slow push-in toward the path
       tl.fromTo('.film__plate--1', { scale: 1.06, yPercent: 0 }, { scale: 1.28, yPercent: 4, duration: 3.2 }, 0)
-        .to('.film__plate--1', { opacity: 0, duration: 0.8 }, 2.4)
+        .to('.film__plate--1', { opacity: 0, duration: 0.35 }, 2.25)
         .to('.film__hero', { opacity: 0, y: -60, duration: 1.0 }, 0.4)
         .to('.film__hint', { opacity: 0, duration: 0.4 }, 0.3);
 
-      // Plate 2 — following the panda down the path (2.4 – 6)
-      tl.fromTo('.film__plate--2', { opacity: 0, scale: 1.08 }, { opacity: 1, duration: 0.8 }, 2.4)
+      // Plate 2 — following the panda down the path (2.4 – 6). Fast cut, not a
+      // lingering dissolve — the two plates show the panda at different
+      // scale/position, so a long crossfade reads as a double-exposure glitch.
+      tl.fromTo('.film__plate--2', { opacity: 0, scale: 1.08 }, { opacity: 1, duration: 0.35 }, 2.4)
         .to('.film__plate--2', { scale: 1.26, yPercent: 3, duration: 3.4 }, 2.6)
-        .to('.film__plate--2', { opacity: 0, duration: 0.8 }, 5.6);
+        .to('.film__plate--2', { opacity: 0, duration: 0.35 }, 5.65);
 
       // The leaf-words fall away behind you while you follow (3.0 – 5.4)
       LEAF_WORDS.forEach((w, i) => {
@@ -110,15 +112,15 @@ export default function ScrollFilm() {
         ).to(`.film__leafword--${i}`, { opacity: 0, duration: 0.4 }, w.at + 1.2);
       });
 
-      // Plate 3 — the lantern in the dark stretch (5.6 – 8.1)
-      tl.fromTo('.film__plate--3', { opacity: 0, scale: 1.1 }, { opacity: 1, duration: 0.8 }, 5.6)
+      // Plate 3 — the lantern in the dark stretch (5.65 – 8.05)
+      tl.fromTo('.film__plate--3', { opacity: 0, scale: 1.1 }, { opacity: 1, duration: 0.35 }, 5.65)
         .to('.film__plate--3', { scale: 1.24, yPercent: -3, duration: 2.6 }, 5.8)
         .fromTo('.film__beat--rest', { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.6 }, 6.3)
         .to('.film__beat--rest', { opacity: 0, y: -40, duration: 0.6 }, 7.4)
-        .to('.film__plate--3', { opacity: 0, duration: 0.8 }, 7.7);
+        .to('.film__plate--3', { opacity: 0, duration: 0.35 }, 7.75);
 
-      // Plate 4 — the grove welcome (7.7 – 10): camera settles, film ends here
-      tl.fromTo('.film__plate--4', { opacity: 0, scale: 1.18 }, { opacity: 1, duration: 0.8 }, 7.7)
+      // Plate 4 — the grove welcome (7.75 – 10): camera settles, film ends here
+      tl.fromTo('.film__plate--4', { opacity: 0, scale: 1.18 }, { opacity: 1, duration: 0.35 }, 7.75)
         .to('.film__plate--4', { scale: 1.02, duration: 2.2 }, 7.9)
         .fromTo('.film__beat--panda', { opacity: 0, y: 46 }, { opacity: 1, y: 0, duration: 0.6 }, 8.6)
         .to('.film__beat--panda', { opacity: 0, duration: 0.5 }, 9.5)
