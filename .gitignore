@@ -33,3 +33,6 @@ dist-ssr
 
 # Raw generated art (source intermediates; shipped as .webp)
 public/film/*.png
+
+.vercel
+.env*

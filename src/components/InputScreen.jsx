@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import PandaDialogueBubble from './PandaDialogueBubble.jsx';
+import EnergyBar from './EnergyBar.jsx';
 
-export default function InputScreen({ onSubmit, disabled, onGoToGrove, pandaDialogue }) {
+export default function InputScreen({
+  onSubmit,
+  disabled,
+  onGoToGrove,
+  pandaDialogue,
+  energy,
+  energyMax,
+  justRefused,
+}) {
   const [text, setText] = useState('');
 
   function handleSubmit(e) {
@@ -13,7 +22,13 @@ export default function InputScreen({ onSubmit, disabled, onGoToGrove, pandaDial
 
   return (
     <form className="input-screen" onSubmit={handleSubmit}>
+      <EnergyBar energy={energy} energyMax={energyMax} />
       <h1 className="input-screen__prompt">What's sitting on your chest?</h1>
+      {justRefused && (
+        <p className="input-screen__refused-note">
+          The panda's still low on energy from before — maybe just the smallest possible thing.
+        </p>
+      )}
       {pandaDialogue && <PandaDialogueBubble text={pandaDialogue} />}
       <textarea
         className="input-screen__textarea"

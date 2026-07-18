@@ -20,6 +20,7 @@ export default function App() {
   const [problemText, setProblemText] = useState('');
   const [groveJustGrew, setGroveJustGrew] = useState(false);
   const [toast, setToast] = useState(null); // { key, text } | null
+  const [justRefused, setJustRefused] = useState(false);
   const showLoading = useDelayedVisible(loading);
 
   async function requestBreakdown(text) {
@@ -40,8 +41,10 @@ export default function App() {
       setPandaDialogue(data.panda_dialogue);
       setPandaRead(data.panda_read ?? null);
       if (data.refusal) {
+        setJustRefused(true);
         setScreen('refusal');
       } else {
+        setJustRefused(false);
         updateAppState({
           current_missions: data.missions.map(createMission),
           energy_level: Math.max(0, appState.energy_level - data.energy_cost),
@@ -144,6 +147,9 @@ export default function App() {
         disabled={loading}
         onGoToGrove={handleGoToGrove}
         pandaDialogue={pandaDialogue}
+        energy={appState.energy_level}
+        energyMax={appState.energy_max}
+        justRefused={justRefused}
       />
     );
   }

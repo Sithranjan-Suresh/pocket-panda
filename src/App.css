@@ -135,6 +135,16 @@
   gap: 12px;
 }
 
+.input-screen__refused-note {
+  max-width: 40ch;
+  text-align: center;
+  color: var(--text);
+  font-style: italic;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  margin: -4px 0 4px;
+}
+
 .input-screen__prompt {
   margin-bottom: 8px;
 }
